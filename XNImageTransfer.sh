@@ -1,15 +1,16 @@
 #!/bin/bash
 
-prefix=2.8.0.1:8001/infra/
-images=(google/cadvisor:v0.25.0 google/cadvisor:v0.25.0)
+FILE_IMAGES_LIST=/Projects/XNImagetTransfer/images.list
 
-for image in ${images[@]}
+while read line
 do
-    name=`echo $image | cut -d \: -f 1`
-    version=`echo $image | cut -d \: -f 2`
+    image=$(echo $line | awk '{print $1}')
+    newImage=$(echo $line | awk '{print $2}')
     /usr/local/bin/docker pull $image
     if [ $? -eq 0 ]
     then
+        name=`echo $image | cut -d \: -f 1`
+        version=`echo $image | cut -d \: -f 2`
         echo $name $version
         line=`/usr/local/bin/docker images | grep -e "$name.*$version"`
         if [ $? -eq 0 ]
@@ -18,10 +19,10 @@ do
             if [ $? -eq 0 ]
             then
                 echo "containerId=$cid"
-                /usr/local/bin/docker tag $cid $prefix$image
+                /usr/local/bin/docker tag $cid $newImage
                 if [ $? -eq 0 ]
                 then
-                    /usr/local/bin/docker push $prefix$image
+                    /usr/local/bin/docker push $newImage
                     if [ $? -eq 0 ]
                     then
                         echo 'docker push success'
@@ -40,4 +41,4 @@ do
     else
         echo "docker pull fail $?"
     fi
-done
+done <$FILE_IMAGES_LIST
