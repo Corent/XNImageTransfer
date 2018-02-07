@@ -21,15 +21,15 @@ do
             if [ $? -eq 0 ]
             then
                 echo "imageId=$iid"
-                /usr/bin/docker save $iid> $TAR_PATH$image.tar
+                /usr/bin/docker save $iid> $TAR_PATH${image//\//.}.tar
                 if [ $? -eq 0 ]
                 then
-                    sz $TAR_PATH$image.tar
+                    sz $TAR_PATH${image//\//.}.tar
                     if [ $? -eq 0 ]
                     then
-                        echo "sz $TAR_PATH$image.tar success"
+                        echo "sz $TAR_PATH${image//\//.}.tar success"
                     else
-                        echo "sz $TAR_PATH$image.tar fail $?"
+                        echo "sz $TAR_PATH${image//\//.}.tar fail $?"
                     fi
                 else
                     echo "docker save fail $?"
