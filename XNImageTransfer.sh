@@ -1,3 +1,5 @@
+!#/bin/bash
+
 prefix=2.8.0.1:8001/infra/
 images=(google/cadvisor:v0.25.0 google/cadvisor:v0.25.0)
 
