@@ -3,10 +3,11 @@
 FILE_IMAGES_LIST=/Projects/XNImagetTransfer/images.list.2.3
 TAR_PATH=/home/dxrd/images/
 
-while read image
+while read line
 do
     host=$(echo $line | awk '{print $1}')
     image=$(echo $line | awk '{print $2}')
+    echo "docker pull $host/$image"
     /usr/bin/docker pull $host/$image
     if [ $? -eq 0 ]
     then
